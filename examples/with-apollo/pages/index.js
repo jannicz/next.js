@@ -1,3 +1,4 @@
+import { withApollo } from '../lib/apolloClient';
 import App from '../components/App'
 import InfoBox from '../components/InfoBox'
 import Header from '../components/Header'
@@ -17,20 +18,6 @@ const IndexPage = () => (
   </App>
 )
 
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
-
-  await apolloClient.query({
-    query: ALL_POSTS_QUERY,
-    variables: allPostsQueryVars,
-  })
-
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-    revalidate: 1,
-  }
-}
-
-export default IndexPage
+// Apply withApollo HOC for all pages where you want to fetch GraphQL
+// This will recursively search the tree for queries and fetch them all
+export default withApollo(IndexPage);

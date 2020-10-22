@@ -22,7 +22,12 @@ export const allPostsQueryVars = {
   first: 10,
 }
 
-export default function PostList() {
+/**
+ * The property ssr will define whether the fetch should be executed on
+ * server side. Setting it to false will render a Loading state and fetch
+ * after the component has been initialized on the client
+ */
+export default function PostList({ ssr = true }) {
   const { loading, error, data, fetchMore, networkStatus } = useQuery(
     ALL_POSTS_QUERY,
     {
@@ -31,6 +36,7 @@ export default function PostList() {
       // the "networkStatus" changes, so we are able to know if it is fetching
       // more data
       notifyOnNetworkStatusChange: true,
+      ssr: ssr
     }
   )
 
